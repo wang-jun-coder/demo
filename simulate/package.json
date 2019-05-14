@@ -1,0 +1,19 @@
+{
+  "name": "simulate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "cov": "nyc npm run test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  }
+}

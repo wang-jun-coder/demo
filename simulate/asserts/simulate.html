@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>simulate jq offset</title>
+    <style>
+        .container {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: cyan;
+        }
+
+        .e1 {
+            width: 100px;
+            height: 5rem;
+            background: yellow;
+        }
+
+        .e2 {
+            width: 300px;
+            margin-left: 100px;
+            padding: 50px;
+            background: orange;
+        }
+
+        .e2 #e2-1 {
+            margin: 20px;
+            padding: 30px;
+            background: greenyellow;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="e1">哈哈哈</div>
+        <div class="e2">
+            <div id="e2-1">test</div>
+        </div>
+    </div>
+    <script>
+        'use strict';
+
+        const offset = ele => {
+            let result = {
+                top: 0,
+                left: 0
+            };
+
+            // 当前节点隐藏, 直接返回 00
+            if (window.getComputedStyle(ele)['display'] === 'none') {
+                return  result;
+            }
+
+            let position;
+            getOffset(ele, true);
+            return result;
+
+            function getOffset(node, init) {
+                if (node.nodeType !== 1) return;
+
+                position = window.getComputedStyle(ele)['position'];
+                if (typeof(init)  === 'undefined' && position === 'static') {
+                    getOffset(node.parentNode);
+                }
+
+                result.top = node.offsetTop + result.top - node.scrollTop;
+                result.left = node.offsetLeft + result.left - node.scrollLeft;
+
+                if (position === 'fixed') {
+                    return;
+                }
+                getOffset(node.parentNode);
+            }
+
+        };
+
+        const result = offset(document.getElementById('e2-1'));
+        console.log(result);
+
+    </script>
+
+    <script>
+        'use strict';
+
+        const offset2 = ele => {
+            let result = {
+                left: 0,
+                top: 0
+            };
+
+            if (!ele.getBoundingClientRect) {
+              return result
+            }
+
+            result = ele.getBoundingClientRect();
+            const documentEle = ele.ownerDocument.documentElement;
+
+            return {
+                left: result.left + window.pageXOffset + documentEle.clientLeft,
+                top: result.top + window.pageYOffset + documentEle.clientTop
+            }
+        };
+        const result2 = offset2(document.getElementById('e2-1'));
+        console.log(result2);
+    </script>
+</body>
+</html>
