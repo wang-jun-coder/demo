@@ -1,0 +1,9 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "simulate/package.json"
+      ]
+    }
+  }
+}
